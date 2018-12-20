@@ -1,7 +1,6 @@
 package com.yzq.updatelibrary;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
@@ -11,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -26,15 +24,14 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+
 /**
  * Created by YuanZhiQiang on 2017/10/20
  */
@@ -332,6 +329,7 @@ public class UpdateDialogActivity extends AppCompatActivity {
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mProgressDialog.setCancelable(false);
 
+
         //使用RxJava对下载信息进行轮询，400毫秒一次
         Observable.interval(200, 400, TimeUnit.MILLISECONDS)
                 .takeUntil(new Func1<Long, Boolean>() {
@@ -344,7 +342,7 @@ public class UpdateDialogActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override
-                    public void call(Long aLong) {
+                    public void call(Long aLong){
                         checkDownloadStatus(downloadId);
                     }
                 });
@@ -438,7 +436,7 @@ public class UpdateDialogActivity extends AppCompatActivity {
             }
         } else {
             File apkFile = new File(mUpdateFileDir.getAbsolutePath(), APK_NAME);
-            apkUri = FileProvider.getUriForFile(mContext, "com.psbc.citizencard.fileProvider", apkFile);
+            apkUri = FileProvider.getUriForFile(mContext, "com.yzq.updatelibrary", apkFile);
         }
 
         install.setDataAndType(apkUri, "application/vnd.android.package-archive");
